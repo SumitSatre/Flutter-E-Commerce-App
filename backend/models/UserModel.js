@@ -7,7 +7,8 @@ let UserSchema = new mongoose.Schema({
         required: [true, "Please Enter the name"]
     },
     contact: {
-        type: Number,
+        type: String,
+        required: [true, "Please Enter the Contact Number"],
     },
     email: {
         type: String,

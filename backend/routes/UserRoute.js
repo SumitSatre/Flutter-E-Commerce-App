@@ -51,7 +51,7 @@ UserRouter.post("/login" , async (req , res)=>{
         const authToken = jwt.sign(data , process.env.JWtSecret);
 
         res.send({status : 200 , success : true ,
-            authToken : authToken });
+            authToken : authToken , message : "User created Successfully!!"});
     }
     catch(error){
         res.send({status : 400 , success : false , message : error.message});

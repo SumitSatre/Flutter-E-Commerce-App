@@ -142,13 +142,14 @@ class _LoginPageState extends State<LoginPage>{
                           );
 
                           var responseData = json.decode(response.body);
-                          LoginMessage = responseData['message']; // Store the message in signUpMessage variable
+                          LoginMessage = responseData['message']; // Store the message in LoginMessage variable
 
                           if (responseData['success']) {
                             FocusScope.of(context).unfocus();
-                            await Navigator.pushReplacement(
+                            Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(builder: (context) => MyHomePage()),
+                                  (route) => false, // This predicate ensures that all previous routes are removed
                             );
                           } else {
                             // This automatically close the keyboard

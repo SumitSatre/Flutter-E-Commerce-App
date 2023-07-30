@@ -24,35 +24,18 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "GeeksForGeeks",
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              // method to show the search bar
-              showSearch(
-                context: context,
-                // delegate to customize the search bar
-                delegate: CustomSearchDelegate(),
-              );
-            },
-            icon: const Icon(Icons.search),
-          )
-        ],
-      ),
 
       body: _pages[_SelectedIndex],
 
       bottomNavigationBar: Container(
-        color: Colors.grey.shade200, // Light grey background color
+        color: Color.fromRGBO(19, 111, 180, 0.98), // Light grey background color
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: GNav(
-            backgroundColor: Colors.grey.shade200, // Light grey background color
-            color: Colors.black,
-            activeColor: Colors.white, // White text color for the active tab
+            backgroundColor: Color.fromRGBO(19, 111, 180, 1.0), // Light grey background color
+            color: Colors.white,
+            activeColor: Colors.black,
+            tabActiveBorder: Border.all(width: 1 , color: Colors.black54),// White text color for the active tab
             tabBackgroundColor: Colors.blue, // Blue background color for the tabs
             gap: 4,
             tabs: [
@@ -83,51 +66,6 @@ class _MainPageState extends State<MainPage> {
         ),
       ),
 
-    );
-  }
-}
-
-
-class CustomSearchDelegate extends SearchDelegate<String> {
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-        onPressed: () {
-          query = '';
-        },
-        icon: Icon(Icons.clear),
-      ),
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-      onPressed: () {
-        close(context, ''); // Pass null as the result
-      },
-      icon: Icon(Icons.arrow_back),
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    // Implement your search results here
-    return Center(
-      child: Text('Search results for "$query"'),
-    );
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    // Implement your search suggestions here
-    return ListView(
-      children: [
-        ListTile(title: Text('Suggestion 1')),
-        ListTile(title: Text('Suggestion 2')),
-        ListTile(title: Text('Suggestion 3')),
-      ],
     );
   }
 }

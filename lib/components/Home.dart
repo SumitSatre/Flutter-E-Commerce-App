@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class HomePage extends StatefulWidget{
   @override
@@ -8,6 +9,9 @@ class HomePage extends StatefulWidget{
 }
 
 class _HomePageState extends State<HomePage> {
+
+  bool _isCategoryDataFetched = false;
+  List<String> list = ["https://source.unsplash.com/random/900x700/?biryani" , "https://source.unsplash.com/random/900x700/?biryani" , "https://source.unsplash.com/random/900x700/?biryani" , "https://source.unsplash.com/random/900x700/?biryani" , "https://source.unsplash.com/random/900x700/?biryani"];
 
   var CategoryData = [];
 
@@ -17,10 +21,13 @@ class _HomePageState extends State<HomePage> {
     var responseData = json.decode(response.body);
 
     if(responseData["success"]){
-      setState(() {
 
-      });
-      CategoryData = responseData["CategoryData"];
+        if(!_isCategoryDataFetched){
+          setState(() {
+            CategoryData = responseData["CategoryData"];
+            _isCategoryDataFetched = true;
+          });
+        }
     }
   }
 
@@ -90,7 +97,18 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
 
-            
+            Container(
+                child: CarouselSlider(
+                  options: CarouselOptions(
+                    disableCenter: true,
+                  ),
+                  items: list
+                      .map((item) => Container(
+                    child: Image(image: NetworkImage(item)),
+                    color: Colors.green,
+                  ))
+                      .toList(),
+                )),
 
           ],
       ),

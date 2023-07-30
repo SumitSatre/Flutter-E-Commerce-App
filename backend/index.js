@@ -17,10 +17,22 @@ app.use(cors());
 // Routes Imported
 const UserRouter = require('./routes/UserRoute');
 const CategoryRouter = require("./routes/CategoryRoute");
+const ErrorHandler = require('./errorHandler');
 
 // Routes Used
 app.use("/api/user" , UserRouter);
 app.use("/api" , CategoryRouter);
 
+app.all("*" , (req,res,next)=>{
+    return next(new ErrorHandler(`Can't find ${req.originalUrl} on the server` , 404));
+})
+
+// Globle error handler
+app.use((error , req , res , next)=>{
+    error.message = error.message || "Internal Server Error";
+    error.statusCode = error.statusCode || 500;
+
+    res.send({success : false , statusCode : error.statusCode , message : error.message});
+})
 
 app.listen(5000);

@@ -16,10 +16,11 @@ app.use(cors());
 
 // Routes Imported
 const UserRouter = require('./routes/UserRoute');
+const CategoryRouter = require("./routes/CategoryRoute");
 
 // Routes Used
 app.use("/api/user" , UserRouter);
-
+app.use("/api" , CategoryRouter);
 
 
 app.listen(5000);

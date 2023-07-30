@@ -21,15 +21,15 @@ UserRouter.post("/signup", async (req, res, next) => {
     if(!isValidEmail(email)){
         return next(new ErrorHandler("Please enter correct email!!" , 501));
     }
-
-    // This is used to check password has minimum 6 letters or not
-    if(password.length < 6){
-        return next(new ErrorHandler("Please enter minimum 6 letter password!!" , 501));
-    }
     
     // used to check contact is exactly 10 letters or not
     if(contact.toString().length != 10){
         return next(new ErrorHandler("Please enter correct contact!!" , 501));
+    }
+
+    // This is used to check password has minimum 6 letters or not
+    if(password.length < 6){
+        return next(new ErrorHandler("Please enter minimum 6 letter password!!" , 501));
     }
 
     // Ckeck if email and contact already present in databse or not

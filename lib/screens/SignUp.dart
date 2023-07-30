@@ -221,7 +221,7 @@ class _SignUpPageState extends State<SignUpPage>{
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text('Thank You'),
+                            title: Text('Sorry,'),
                             content: Text(signUpMessage),
                             actions: [
                               TextButton(

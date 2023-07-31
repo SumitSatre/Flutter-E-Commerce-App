@@ -1,3 +1,4 @@
+import 'package:ecommerce/components/Home.dart';
 import 'package:ecommerce/screens/Dashboard.dart';
 import 'package:ecommerce/screens/Login.dart';
 import 'package:flutter/material.dart';
@@ -16,12 +17,92 @@ class _SignUpPageState extends State<SignUpPage>{
 
   bool _isPasswordVisible = false;
 
-  var signUpMessage = "";
-
   var nameController = TextEditingController();
   var pwdController = TextEditingController();
   var emailController = TextEditingController();
   var contactController = TextEditingController();
+
+
+  Future<void> registerUser(name , email , password , contact) async {
+
+    // First we checck all values filled for not if not show dialog box
+    if (name.isEmpty || email.isEmpty || password.isEmpty || contact.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Please fill in all the fields.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+    // start the procedure of post api
+    else {
+      var data = {
+        'name': name,
+        'email': email,
+        'password': password,
+        'contact': contact,
+      };
+
+      var response = await http.post(
+        Uri.parse("https://flutter-app-backend-qy7f.onrender.com/api/user/signup"),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode(data),
+      );
+
+      var responseData = json.decode(response.body);
+      var signUpMessage = responseData['message']; // Store the message in signUpMessage variable
+
+      // If post api fetched correctly
+      if (responseData['success']) {
+
+        var pref = await SharedPreferences.getInstance();
+        await pref.setString("authToken", responseData["authToken"]);
+
+        FocusScope.of(context).unfocus();
+        await Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => MainPage()),
+        );
+      }
+
+      // if post api fetched unsuccessfully
+      else {
+        // This automatically close the keyboard
+        FocusScope.of(context).unfocus();
+        // Show the AlertDialog with the signUpMessage
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Sorry,'),
+              content: Text(signUpMessage),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -166,76 +247,8 @@ class _SignUpPageState extends State<SignUpPage>{
                   String password = pwdController.text;
                   String contact = contactController.text;
 
-                  if (name.isEmpty || email.isEmpty || password.isEmpty || contact.isEmpty) {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text('Error'),
-                          content: Text('Please fill in all the fields.'),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text('OK'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  } else {
-                    var data = {
-                      'name': name,
-                      'email': email,
-                      'password': password,
-                      'contact': contact,
-                    };
+                  await registerUser(name , email , password , contact);
 
-                    var response = await http.post(
-                      Uri.parse("https://flutter-app-backend-qy7f.onrender.com/api/user/signup"),
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      body: json.encode(data),
-                    );
-
-                    var responseData = json.decode(response.body);
-                    signUpMessage = responseData['message']; // Store the message in signUpMessage variable
-
-                    if (responseData['success']) {
-
-                      var pref = await SharedPreferences.getInstance();
-                      await pref.setString("authToken", responseData["authToken"]);
-
-                      FocusScope.of(context).unfocus();
-                      await Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => MainPage()),
-                      );
-                    } else {
-                      // This automatically close the keyboard
-                      FocusScope.of(context).unfocus();
-                      // Show the AlertDialog with the signUpMessage
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text('Sorry,'),
-                            content: Text(signUpMessage),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text('OK'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    }
-                  }
                 },
                 child: Text("Continue"),
               ),
@@ -255,6 +268,18 @@ class _SignUpPageState extends State<SignUpPage>{
                   ),
                 ],
               ),
+            ),
+
+            Container(
+              margin: EdgeInsets.all(10),
+              child: TextButton(
+                  onPressed: ()async  {
+                    await Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => MainPage()),
+                    );
+                  },
+                  child: Text("Skip sign in" , style: TextStyle(color: Colors.blue , fontSize: 17),)),
             )
 
           ],

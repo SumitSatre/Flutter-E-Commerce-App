@@ -1,7 +1,7 @@
+import 'package:another_carousel_pro/another_carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:carousel_slider/carousel_slider.dart';
 
 class HomePage extends StatefulWidget{
   @override
@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget{
 class _HomePageState extends State<HomePage> {
 
   bool _isCategoryDataFetched = false;
-  List<String> list = ["https://source.unsplash.com/random/900x700/?biryani" , "https://source.unsplash.com/random/900x700/?biryani" , "https://source.unsplash.com/random/900x700/?biryani" , "https://source.unsplash.com/random/900x700/?biryani" , "https://source.unsplash.com/random/900x700/?biryani"];
+  List<Widget> CarouselImages = [];
 
   var CategoryData = [];
 
@@ -28,6 +28,12 @@ class _HomePageState extends State<HomePage> {
             _isCategoryDataFetched = true;
           });
         }
+
+        CarouselImages.addAll([
+          Image.network("https://source.unsplash.com/random/900x700/?fashion"),
+          Image.network("https://source.unsplash.com/random/900x700/?girl"),
+          Image.network("https://source.unsplash.com/random/900x700/?women"),
+        ]);
     }
   }
 
@@ -46,117 +52,91 @@ class _HomePageState extends State<HomePage> {
         title: const Text(
           "QuickShop",
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              // method to show the search bar
-              showSearch(
-                context: context,
-                // delegate to customize the search bar
-                delegate: CustomSearchDelegate(),
-              );
-            },
-            icon: const Icon(Icons.search),
-          )
-        ],
       ),
 
-      body: Column(
-          children: [
+      body: SingleChildScrollView(
+        child: Column(
+            children: [
 
-            // Categories
-            Card(
-              child: Container(
-                padding: EdgeInsets.only(top: 15 , bottom: 15),
-                color: Colors.white,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: CategoryData != [] ?
-                    CategoryData.map((value){
-                      return Container(
-                        padding: EdgeInsets.all(3),
-                        margin: EdgeInsets.only(right: 5),
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              backgroundImage: NetworkImage(value["imageUrl"]),
-                              radius: 35,
-                            ),
+              // Categories
+              Card(
+                child: Container(
+                  padding: EdgeInsets.only(top: 15 , bottom: 15),
+                  color: Colors.white,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    child: Row(
+                      children: CategoryData != [] ?
+                      CategoryData.map((value){
+                        return Container(
+                          padding: EdgeInsets.all(3),
+                          margin: EdgeInsets.only(right: 5),
+                          child: Column(
+                            children: [
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(value["imageUrl"]),
+                                radius: 35,
+                              ),
 
-                            SizedBox(height: 8,),
+                              SizedBox(height: 8,),
 
-                            Text(value["category"])
-                          ],
-                        ),
-                      );
-                    } ).toList()
-                    : [Center(child: Text("No Data"))],
+                              Text(value["category"])
+                            ],
+                          ),
+                        );
+                      } ).toList()
+                      : [Center(child: Text("No Data"))],
+                    ),
                   ),
                 ),
               ),
-            ),
 
-            Container(
-                child: CarouselSlider(
-                  options: CarouselOptions(
-                    disableCenter: true,
+              // Carousel
+
+              Column(
+                children: [
+                  SizedBox(
+                    height: 250,
+                    width: double.infinity,
+                    child: CarouselImages.isNotEmpty ?
+                    AnotherCarousel(
+                      images: CarouselImages,
+                      dotSize: 6,
+                      indicatorBgPadding: 10,
+                      dotIncreasedColor: Colors.lightBlue,
+                      autoplay: true,
+                      autoplayDuration: Duration(seconds: 8),
+
+                    )
+                    :
+                      Center(child : Text("No Images"))
                   ),
-                  items: list
-                      .map((item) => Container(
-                    child: Image(image: NetworkImage(item)),
-                    color: Colors.green,
-                  ))
-                      .toList(),
-                )),
+                ],
+              ),
 
-          ],
+              Column(
+
+                  children: [
+                    Container(
+                        height: 40,
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.only(left: 20),
+                        color: Color.fromRGBO(210, 176, 215, 1.0),
+                        child: Text("Top picks for you!", style: TextStyle(fontSize: 20 , fontWeight: FontWeight.w700))
+                    ),
+
+                    Container(
+                      color: Colors.cyan,
+
+                    ),
+                  ]
+              ),
+              
+            ],
+        ),
       ),
     );
   }
 }
 
-
-class CustomSearchDelegate extends SearchDelegate<String> {
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-        onPressed: () {
-          query = '';
-        },
-        icon: Icon(Icons.clear),
-      ),
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-      onPressed: () {
-        close(context, ''); // Pass null as the result
-      },
-      icon: Icon(Icons.arrow_back),
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    // Implement your search results here
-    return Center(
-      child: Text('Search results for "$query"'),
-    );
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    // Implement your search suggestions here
-    return ListView(
-      children: [
-        ListTile(title: Text('Suggestion 1')),
-        ListTile(title: Text('Suggestion 2')),
-        ListTile(title: Text('Suggestion 3')),
-      ],
-    );
-  }
-}

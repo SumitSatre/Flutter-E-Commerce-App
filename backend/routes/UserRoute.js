@@ -62,7 +62,7 @@ UserRouter.post("/signup", async (req, res, next) => {
     const authToken = jwt.sign(data, process.env.JWtSecret);
 
     res.status(201).json({
-        status: 201, success: true, message: "User registered successfully!",
+        statusCode: 201, success: true, message: "User registered successfully!",
         authToken: authToken
     });
 

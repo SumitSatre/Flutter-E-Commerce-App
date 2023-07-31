@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const ErrorHandler = require('./errorHandler');
 
 const dotenv = require('dotenv');
 dotenv.config({path : "./config/.env"});
@@ -17,11 +18,12 @@ app.use(cors());
 // Routes Imported
 const UserRouter = require('./routes/UserRoute');
 const CategoryRouter = require("./routes/CategoryRoute");
-const ErrorHandler = require('./errorHandler');
+const ProductRouter = require('./routes/ProductRoute');
 
 // Routes Used
 app.use("/api/user" , UserRouter);
 app.use("/api" , CategoryRouter);
+app.use("/api" , ProductRouter);
 
 app.all("*" , (req,res,next)=>{
     return next(new ErrorHandler(`Can't find ${req.originalUrl} on the server` , 404));

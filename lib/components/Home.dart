@@ -14,32 +14,44 @@ class _HomePageState extends State<HomePage> {
   List<Widget> CarouselImages = [];
 
   var CategoryData = [];
+  var ProductData = [];
 
   void fetchData () async {
+    // This is used to fetch category name and image
     var response = await http.get(Uri.parse("https://flutter-app-backend-qy7f.onrender.com/api/categories"));
-
     var responseData = json.decode(response.body);
 
     if(responseData["success"]){
-
         if(!_isCategoryDataFetched){
           setState(() {
             CategoryData = responseData["CategoryData"];
             _isCategoryDataFetched = true;
           });
         }
-
-        CarouselImages.addAll([
-          Image.network("https://source.unsplash.com/random/900x700/?fashion"),
-          Image.network("https://source.unsplash.com/random/900x700/?girl"),
-          Image.network("https://source.unsplash.com/random/900x700/?women"),
-        ]);
     }
+  }
+
+  // This is used to fetch product items
+  void fetchProductData(product) async {
+    var response = await http.post(
+      Uri.parse("https://flutter-app-backend-qy7f.onrender.com/api/products"),
+      headers: {
+        'Content-Type': 'application/json',
+        },
+      body : product.isEmpty ? null :  
+
+    );
   }
 
   @override
   void initState() {
     super.initState();
+
+    CarouselImages.addAll([
+      Image.network("https://source.unsplash.com/random/900x700/?fashion"),
+      Image.network("https://source.unsplash.com/random/900x700/?girl"),
+      Image.network("https://source.unsplash.com/random/900x700/?women"),
+    ]);
 
     fetchData();
   }
@@ -115,6 +127,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
 
+              // This is used to show products on home screen
               Column(
 
                   children: [
@@ -128,7 +141,7 @@ class _HomePageState extends State<HomePage> {
 
                     Container(
                       color: Colors.cyan,
-
+                      child :
                     ),
                   ]
               ),

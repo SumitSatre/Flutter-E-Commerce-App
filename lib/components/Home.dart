@@ -29,6 +29,18 @@ class _HomePageState extends State<HomePage> {
           });
         }
     }
+
+
+    var responseProducts = await http.get(Uri.parse("https://flutter-app-backend-qy7f.onrender.com/api/products"));
+    var responseDataProducts = json.decode(responseProducts.body);
+
+    if(responseDataProducts["success"]){
+      if(!_isCategoryDataFetched){
+        setState(() {
+          ProductData = responseDataProducts["productsData"];
+        });
+      }
+    }
   }
 
   // This is used to fetch product items
@@ -38,7 +50,6 @@ class _HomePageState extends State<HomePage> {
       headers: {
         'Content-Type': 'application/json',
         },
-      body : product.isEmpty ? null :  
 
     );
   }
@@ -141,7 +152,28 @@ class _HomePageState extends State<HomePage> {
 
                     Container(
                       color: Colors.cyan,
-                      child :
+                      child : GridView.builder(
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2, // Number of columns in the grid
+                            crossAxisSpacing: 8.0,
+                            mainAxisSpacing: 8.0
+                          ),
+                          itemCount: ProductData.length,
+                          itemBuilder: (context , index){
+                            return Card(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height : 70,
+                                    width: 50,
+                                    child: Image.network(ProductData[index]["image"]),
+
+                                  )
+                                ],
+                              )
+                            );
+                          }
+                      )
                     ),
                   ]
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:ecommerce/components/CategoryPage.dart';
 
 
 class CategoriesPage extends StatefulWidget{
@@ -62,26 +63,35 @@ class _CategoriesPageState extends State<CategoriesPage> {
             ),
             itemCount: categoryData.length,
             itemBuilder: (context, index) {
-              return Container(
-                padding: EdgeInsets.all(3),
-                margin: EdgeInsets.only(right: 5),
+              return InkWell(
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                      return CategryPage(CategoryName : categoryData[index]["category"]);
+                    }));
 
-                child: Column(
-                  children: [
-                    Container(
-                      height: 130,
-                      width: 150,
-                      child : Image(image : NetworkImage(categoryData[index]["imageUrl"]) , fit: BoxFit.cover,),
-                    ),
+                  },
 
-                    SizedBox(height: 8,),
+                child: Container(
+                  padding: EdgeInsets.all(3),
+                  margin: EdgeInsets.only(right: 5),
 
-                    Container(
-                        width: double.infinity,
-                        alignment: Alignment.center,
-                        child: Text(categoryData[index]["category"] , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 13),)
-                    )
-                  ],
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 130,
+                        width: 150,
+                        child : Image(image : NetworkImage(categoryData[index]["imageUrl"]) , fit: BoxFit.cover,),
+                      ),
+
+                      SizedBox(height: 8,),
+
+                      Container(
+                          width: double.infinity,
+                          alignment: Alignment.center,
+                          child: Text(categoryData[index]["category"] , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 13),)
+                      )
+                    ],
+                  ),
                 ),
               );
             },

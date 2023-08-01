@@ -1,5 +1,5 @@
 import 'package:another_carousel_pro/another_carousel_pro.dart';
-import 'package:ecommerce/components/CategoryDescribe.dart';
+import 'package:ecommerce/components/CategoryPage.dart';
 import 'package:ecommerce/screens/Categories.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                     return InkWell(
                       onTap: (){
                         Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                          return CategryDescribe(CategoryName : value["category"] ,productData : productData);
+                          return CategryPage(CategoryName : value["category"]);
                         }));
 
                       },

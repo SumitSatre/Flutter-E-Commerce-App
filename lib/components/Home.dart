@@ -19,20 +19,19 @@ class _HomePageState extends State<HomePage> {
     var responseData = json.decode(response.body);
 
     if(responseData["success"]){
-          categoryData = responseData["CategoryData"];
+      categoryData = responseData["CategoryData"];
     }
 
     response = await http.get(Uri.parse("https://flutter-app-backend-qy7f.onrender.com/api/products"));
     responseData = json.decode(response.body);
 
     if(responseData["success"]){
-        setState(() {
-          productData = responseData["productsData"];
-        });
+      setState(() {
+        productData = responseData["productsData"];
+      });
 
     }
   }
-
 
   @override
   void initState() {
@@ -58,7 +57,7 @@ class _HomePageState extends State<HomePage> {
           "QuickShop",
         ),
       ),
-      body: Column(
+      body: ListView(
         children: [
           // Categories
           Card(
@@ -93,7 +92,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          // Carousel
+// Carousel
           SizedBox(
             height: 250,
             width: double.infinity,
@@ -109,42 +108,56 @@ class _HomePageState extends State<HomePage> {
                 : Center(child: Text("No Images")),
           ),
 
+
           // Top picks for you
           Container(
-            height: 40,
+            height: 60,
             alignment: Alignment.centerLeft,
-            padding: EdgeInsets.only(left: 20),
-            color: Color.fromRGBO(210, 176, 215, 1.0),
+            padding: EdgeInsets.only(left: 20 , top: 20 , bottom: 10),
+            margin: EdgeInsets.only( bottom: 20),
+            color: Color.fromRGBO(210, 176, 215, 0.45),
             child: Text("Top picks for you!", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
           ),
 
           // Grid view for products
-          Expanded(
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-              ),
-              itemCount: productData.length,
-              itemBuilder: (context, index) {
-                return SizedBox(
-                  height: 50,
-                  width: 100,
-                  child: AspectRatio(
-                    aspectRatio: 1.0, // Set the aspect ratio to 1:1 for a square shape.
-                    child: ClipRRect(
-                      clipBehavior: Clip.antiAlias,
-                      borderRadius: BorderRadius.circular(15.0),
-                      child: Image.network(
-                        productData[index]["image"],
+          GridView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+
+            ),
+            itemCount: productData.length,
+            itemBuilder: (context, index) {
+              return Card(
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(top: 10,  left: 20 , right: 20 , bottom: 2),
+                      height: 110,
+                      child: Image(
+                        image: NetworkImage(productData[index]["image"]),
                         fit: BoxFit.cover,
                       ),
                     ),
-                  ),
-                );
-              },
-            ),
+
+                    Text(productData[index]["title"]),
+
+                    Text("Price: \₹${(productData[index]["price"]*75).toInt()}"),
+
+                    Container(
+                      height : 25,
+                      child: ElevatedButton(onPressed: (){
+
+                      },
+                          child: Text("Add to cart")),
+                    )
+                  ],
+                ),
+              );
+            },
           )
 
         ],

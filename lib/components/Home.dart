@@ -128,12 +128,25 @@ class _HomePageState extends State<HomePage> {
               ),
               itemCount: productData.length,
               itemBuilder: (context, index) {
-                return Image.network(
-                      productData[index]["image"]
+                return SizedBox(
+                  height: 50,
+                  width: 100,
+                  child: AspectRatio(
+                    aspectRatio: 1.0, // Set the aspect ratio to 1:1 for a square shape.
+                    child: ClipRRect(
+                      clipBehavior: Clip.antiAlias,
+                      borderRadius: BorderRadius.circular(15.0),
+                      child: Image.network(
+                        productData[index]["image"],
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
                 );
               },
             ),
-          ),
+          )
+
         ],
       ),
     );

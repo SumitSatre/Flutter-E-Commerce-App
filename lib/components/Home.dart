@@ -14,31 +14,25 @@ class _HomePageState extends State<HomePage> {
   var categoryData = [];
   var productData = [];
 
-  void fetchData() async {
+  void fetchData () async {
     var response = await http.get(Uri.parse("https://flutter-app-backend-qy7f.onrender.com/api/categories"));
     var responseData = json.decode(response.body);
 
-    if (responseData["success"]) {
-      if (!_isCategoryDataFetched) {
-        setState(() {
+    if(responseData["success"]){
           categoryData = responseData["CategoryData"];
-          _isCategoryDataFetched = true;
-        });
-      }
     }
 
-    var responseProducts =
-    await http.get(Uri.parse("https://flutter-app-backend-qy7f.onrender.com/api/products"));
-    var responseDataProducts = json.decode(responseProducts.body);
+    response = await http.get(Uri.parse("https://flutter-app-backend-qy7f.onrender.com/api/products"));
+    responseData = json.decode(response.body);
 
-    if (responseDataProducts["success"]) {
-      if (!_isCategoryDataFetched) {
+    if(responseData["success"]){
         setState(() {
-          productData = responseDataProducts["productsData"];
+          productData = responseData["productsData"];
         });
-      }
+
     }
   }
+
 
   @override
   void initState() {
@@ -50,7 +44,9 @@ class _HomePageState extends State<HomePage> {
       Image.network("https://source.unsplash.com/random/900x700/?women"),
     ]);
 
-    fetchData();
+    if(!_isCategoryDataFetched){
+      fetchData();
+    }
   }
 
   @override
@@ -62,19 +58,18 @@ class _HomePageState extends State<HomePage> {
           "QuickShop",
         ),
       ),
-      body: ListView( // Change #1: Use ListView instead of SingleChildScrollView
+      body: Column(
         children: [
           // Categories
           Card(
             child: Container(
-              padding: EdgeInsets.only(top: 15, bottom: 15),
+              padding: EdgeInsets.only(top: 15 , bottom: 15),
               color: Colors.white,
-              child: SingleChildScrollView( // Remove this SingleChildScrollView
+              child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                clipBehavior: Clip.antiAliasWithSaveLayer,
                 child: Row(
-                  children: categoryData.isNotEmpty
-                      ? categoryData.map((value) {
+                  children: categoryData != [] ?
+                  categoryData.map((value){
                     return Container(
                       padding: EdgeInsets.all(3),
                       margin: EdgeInsets.only(right: 5),
@@ -84,12 +79,14 @@ class _HomePageState extends State<HomePage> {
                             backgroundImage: NetworkImage(value["imageUrl"]),
                             radius: 35,
                           ),
-                          SizedBox(height: 8),
-                          Text(value["category"]),
+
+                          SizedBox(height: 8,),
+
+                          Text(value["category"])
                         ],
                       ),
                     );
-                  }).toList()
+                  } ).toList()
                       : [Center(child: Text("No Data"))],
                 ),
               ),
@@ -97,23 +94,19 @@ class _HomePageState extends State<HomePage> {
           ),
 
           // Carousel
-          Column(
-            children: [
-              SizedBox(
-                height: 250,
-                width: double.infinity,
-                child: carouselImages.isNotEmpty
-                    ? AnotherCarousel(
-                  images: carouselImages,
-                  dotSize: 6,
-                  indicatorBgPadding: 10,
-                  dotIncreasedColor: Colors.lightBlue,
-                  autoplay: true,
-                  autoplayDuration: Duration(seconds: 8),
-                )
-                    : Center(child: Text("No Images")),
-              ),
-            ],
+          SizedBox(
+            height: 250,
+            width: double.infinity,
+            child: carouselImages.isNotEmpty
+                ? AnotherCarousel(
+              images: carouselImages,
+              dotSize: 6,
+              indicatorBgPadding: 10,
+              dotIncreasedColor: Colors.lightBlue,
+              autoplay: true,
+              autoplayDuration: Duration(seconds: 8),
+            )
+                : Center(child: Text("No Images")),
           ),
 
           // Top picks for you
@@ -126,7 +119,21 @@ class _HomePageState extends State<HomePage> {
           ),
 
           // Grid view for products
-          Image.network(productData[1]["image"])
+          Expanded(
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+              ),
+              itemCount: productData.length,
+              itemBuilder: (context, index) {
+                return Image.network(
+                      productData[index]["image"]
+                );
+              },
+            ),
+          ),
         ],
       ),
     );

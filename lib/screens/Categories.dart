@@ -47,32 +47,32 @@ class _CategoriesPageState extends State<CategoriesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("QuickShop"),
-      ),
+        appBar: AppBar(
+          title: Text("QuickShop"),
+        ),
 
-      body: Container(
-        padding: EdgeInsets.only(top: 20),
-        child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
+        body: Container(
+          padding: EdgeInsets.only(top: 20),
+          child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
 
-          ),
-          itemCount: categoryData.length,
-          itemBuilder: (context, index) {
-            return Container(
+            ),
+            itemCount: categoryData.length,
+            itemBuilder: (context, index) {
+              return Container(
                 padding: EdgeInsets.all(3),
                 margin: EdgeInsets.only(right: 5),
 
                 child: Column(
                   children: [
-                      Container(
-                        height: 130,
-                          width: 150,
-                          child : Image(image : NetworkImage(categoryData[index]["imageUrl"]) , fit: BoxFit.cover,),
-                      ),
+                    Container(
+                      height: 130,
+                      width: 150,
+                      child : Image(image : NetworkImage(categoryData[index]["imageUrl"]) , fit: BoxFit.cover,),
+                    ),
 
                     SizedBox(height: 8,),
 
@@ -84,9 +84,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
                   ],
                 ),
               );
-          },
-        ),
-      )
+            },
+          ),
+        )
 
     );
   }

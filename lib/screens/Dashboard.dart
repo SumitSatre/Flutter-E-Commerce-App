@@ -1,7 +1,7 @@
-import 'package:ecommerce/components/Categories.dart';
-import 'package:ecommerce/components/Home.dart';
-import 'package:ecommerce/components/Menu.dart';
-import 'package:ecommerce/components/cart.dart';
+import 'package:ecommerce/screens/Categories.dart';
+import 'package:ecommerce/screens/Home.dart';
+import 'package:ecommerce/screens/Menu.dart';
+import 'package:ecommerce/screens/cart.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 

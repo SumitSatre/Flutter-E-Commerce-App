@@ -1,4 +1,4 @@
-import 'package:ecommerce/components/Home.dart';
+import 'package:ecommerce/screens/Home.dart';
 import 'package:ecommerce/screens/Dashboard.dart';
 import 'package:ecommerce/screens/Login.dart';
 import 'package:flutter/material.dart';

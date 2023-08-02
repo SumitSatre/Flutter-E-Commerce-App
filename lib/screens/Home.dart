@@ -16,22 +16,21 @@ class _HomePageState extends State<HomePage> {
   var categoryData = [];
   var productData = [];
 
-  void fetchData () async {
+  Future<void> fetchCategoryData () async {
     var response = await http.get(Uri.parse("https://flutter-app-backend-qy7f.onrender.com/api/categories"));
     var responseData = json.decode(response.body);
 
     if(responseData["success"]){
       categoryData = responseData["CategoryData"];
     }
+  }
 
-    response = await http.get(Uri.parse("https://flutter-app-backend-qy7f.onrender.com/api/products"));
-    responseData = json.decode(response.body);
+  Future<void> fetchProductData () async {
+    var response = await http.get(Uri.parse("https://flutter-app-backend-qy7f.onrender.com/api/products"));
+    var responseData = json.decode(response.body);
 
     if(responseData["success"]){
-      setState(() {
-        productData = responseData["productsData"];
-      });
-
+      productData = responseData["productsData"];
     }
   }
 
@@ -45,9 +44,6 @@ class _HomePageState extends State<HomePage> {
       Image.network("https://source.unsplash.com/random/900x700/?women"),
     ]);
 
-    if(!_isCategoryDataFetched){
-      fetchData();
-    }
   }
 
   @override
@@ -61,48 +57,65 @@ class _HomePageState extends State<HomePage> {
       ),
       body: ListView(
         children: [
-          // Categories
-          Card(
-            child: Container(
-              padding: EdgeInsets.only(top: 15 , bottom: 15),
-              color: Colors.white,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: categoryData != [] ?
-                  categoryData.map((value){
-                    return InkWell(
-                      onTap: (){
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                          return CategryPage(CategoryName : value["category"]);
-                        }));
 
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(3),
-                        margin: EdgeInsets.only(right: 5),
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              backgroundImage: NetworkImage(value["imageUrl"]),
-                              radius: 35,
-                            ),
+          // Category Scroll Card
+          FutureBuilder<void>(
+              future: fetchCategoryData(),
+              builder: (context , snapshot){
 
-                            SizedBox(height: 8,),
+                if(snapshot.connectionState == ConnectionState.waiting){
+                  return Center(child: CircularProgressIndicator());
+                }
 
-                            Text(value["category"])
-                          ],
+                else if(snapshot.hasError){
+                  return Center(child: Text("Oops, Cannot Access Data" , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 25),),);
+                }
+
+                else{
+                  return Card(
+                    child: Container(
+                      padding: EdgeInsets.only(top: 15 , bottom: 15),
+                      color: Colors.white,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: categoryData != [] ?
+                          categoryData.map((value){
+                            return InkWell(
+                              onTap: (){
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                                  return CategryPage(CategoryName : value["category"]);
+                                }));
+
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(3),
+                                margin: EdgeInsets.only(right: 5),
+                                child: Column(
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundImage: NetworkImage(value["imageUrl"]),
+                                      radius: 35,
+                                    ),
+
+                                    SizedBox(height: 8,),
+
+                                    Text(value["category"])
+                                  ],
+                                ),
+                              ),
+                            );
+                          } ).toList()
+                              : [Center(child: Text("No Data"))],
                         ),
                       ),
-                    );
-                  } ).toList()
-                      : [Center(child: Text("No Data"))],
-                ),
-              ),
-            ),
+                    ),
+                  );
+                }  // else
+              } // FutureBuilder builder
           ),
 
-// Carousel
+          // Carousel
           SizedBox(
             height: 250,
             width: double.infinity,
@@ -130,44 +143,66 @@ class _HomePageState extends State<HomePage> {
           ),
 
           // Grid view for products
-          GridView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
+          FutureBuilder<void>(
+              future: fetchProductData(),
+              builder: (context , snapshot){
 
-            ),
-            itemCount: productData.length,
-            itemBuilder: (context, index) {
-              return Card(
-                child: Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(top: 10,  left: 20 , right: 20 , bottom: 2),
-                      height: 110,
-                      child: Image(
-                        image: NetworkImage(productData[index]["image"]),
-                        fit: BoxFit.cover,
-                      ),
+                if(snapshot.connectionState == ConnectionState.waiting){
+                  return Center(child: CircularProgressIndicator());
+                }
+
+                else if(snapshot.hasError){
+                  return Center(child: Text("Oops, Cannot Access Data" , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 25),),);
+                }
+
+                else{
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+
                     ),
+                    itemCount: productData.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        child: Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.only(top: 10,  left: 20 , right: 20 , bottom: 2),
+                              height: 110,
+                              child: Image(
+                                image: NetworkImage(productData[index]["image"]),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
 
-                    Text(productData[index]["title"]),
+                            Text(productData[index]["title"]),
 
-                    Text("Price: \₹${(productData[index]["price"]*75).toInt()}"),
+                            Text("Price: \₹${(productData[index]["price"]*75).toInt()}"),
 
-                    Container(
-                      height : 25,
-                      child: ElevatedButton(onPressed: (){
+                            Container(
+                              height : 25,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color.fromRGBO(8, 129, 120, 1),
+                                ),
+                                onPressed: () {
+                                  // Add your onPressed function here
+                                },
+                                child: Text("Add to cart"),
+                              ),
 
-                      },
-                          child: Text("Add to cart")),
-                    )
-                  ],
-                ),
-              );
-            },
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                }
+              }
           )
 
         ],

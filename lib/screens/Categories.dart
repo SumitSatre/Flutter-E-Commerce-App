@@ -10,27 +10,15 @@ class CategoriesPage extends StatefulWidget{
 }
 
 class _CategoriesPageState extends State<CategoriesPage> {
-  bool _isCategoryDataFetched = false;
   var categoryData = [];
   final http.Client _httpClient = http.Client();
 
-  void fetchData () async {
+  Future<void> fetchCategoriesData () async {
     var response = await http.get(Uri.parse("https://flutter-app-backend-qy7f.onrender.com/api/categories"));
     var responseData = json.decode(response.body);
 
     if(responseData["success"]){
-      setState(() {
-        categoryData = responseData["CategoryData"];
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    if(!_isCategoryDataFetched){
-      fetchData();
+      categoryData = responseData["CategoryData"];
     }
   }
 
@@ -52,51 +40,67 @@ class _CategoriesPageState extends State<CategoriesPage> {
           title: Text("QuickShop"),
         ),
 
-        body: Container(
-          padding: EdgeInsets.only(top: 20),
-          child: GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
+        body: FutureBuilder<void>(
+          future: fetchCategoriesData(),
+          builder: (context , snapshot){
+            if(snapshot.connectionState == ConnectionState.waiting){
+              return Center(child: CircularProgressIndicator(),);
+            }
 
-            ),
-            itemCount: categoryData.length,
-            itemBuilder: (context, index) {
-              return InkWell(
-                  onTap: (){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                      return CategryPage(CategoryName : categoryData[index]["category"]);
-                    }));
+            else if(snapshot.hasError){
+              return Center(child: Text("Oops, Cannot Access Data" , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 25),),);
+            }
 
-                  },
+            else{
+              return Container(
+                padding: EdgeInsets.only(top: 20),
+                child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
 
-                child: Container(
-                  padding: EdgeInsets.all(3),
-                  margin: EdgeInsets.only(right: 5),
-
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 130,
-                        width: 150,
-                        child : Image(image : NetworkImage(categoryData[index]["imageUrl"]) , fit: BoxFit.cover,),
-                      ),
-
-                      SizedBox(height: 8,),
-
-                      Container(
-                          width: double.infinity,
-                          alignment: Alignment.center,
-                          child: Text(categoryData[index]["category"] , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 13),)
-                      )
-                    ],
                   ),
+                  itemCount: categoryData.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                          return CategryPage(CategoryName : categoryData[index]["category"]);
+                        }));
+
+                      },
+
+                      child: Container(
+                        padding: EdgeInsets.all(3),
+                        margin: EdgeInsets.only(right: 5),
+
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 130,
+                              width: 150,
+                              child : Image(image : NetworkImage(categoryData[index]["imageUrl"]) , fit: BoxFit.cover,),
+                            ),
+
+                            SizedBox(height: 8,),
+
+                            Container(
+                                width: double.infinity,
+                                alignment: Alignment.center,
+                                child: Text(categoryData[index]["category"] , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 13),)
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
-        )
+              )
+              ;
+            }
+          },
+        ),
 
     );
   }

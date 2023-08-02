@@ -48,7 +48,6 @@ class _LoginPageState extends State<LoginPage>{
                       controller : emailController,
                       decoration: InputDecoration(
                           hintText: "Enter Email ",
-                          suffixText: ".com",
                           prefixIcon: Icon(Icons.email_outlined ) ,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),

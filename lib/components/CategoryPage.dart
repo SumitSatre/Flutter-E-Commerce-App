@@ -18,7 +18,7 @@ class CategryPageState extends State<CategryPage> {
 
   Future<void> fetchCategoryProducts() async {
     var response = await http.get(
-      Uri.parse("http://localhost:5000/api/products/${widget.CategoryName}")
+      Uri.parse("https://flutter-app-backend-qy7f.onrender.com/api/products/${widget.CategoryName}")
     );
 
     var responseData = await json.decode(response.body);
@@ -79,6 +79,9 @@ class CategryPageState extends State<CategryPage> {
                       Container(
                         height: 25,
                         child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromRGBO(8, 129, 120, 1),
+                          ),
                           onPressed: () {},
                           child: Text("Add to cart"),
                         ),

@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage>{
             Container(
               margin: EdgeInsets.all(15),
               padding: EdgeInsets.only(top: 15 , left: 20),
-              child: Text("Sign Up" , style: TextStyle(fontSize: 28 , fontWeight: FontWeight.bold , color: Colors.redAccent )),
+              child: Text("Login" , style: TextStyle(fontSize: 28 , fontWeight: FontWeight.bold , color: Colors.black )),
             ),
 
             // This is used for email
@@ -47,7 +47,7 @@ class _LoginPageState extends State<LoginPage>{
                     child: TextField(
                       controller : emailController,
                       decoration: InputDecoration(
-                          hintText: "Enter Email ",
+                          hintText: "Enter Email",
                           prefixIcon: Icon(Icons.email_outlined ) ,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),

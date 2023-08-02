@@ -119,7 +119,7 @@ class _SignUpPageState extends State<SignUpPage>{
             Container(
               margin: EdgeInsets.all(15),
               padding: EdgeInsets.only(top: 15 , left: 20),
-              child: Text("Create Account" , style: TextStyle(fontSize: 28 , fontWeight: FontWeight.bold , color: Colors.redAccent )),
+              child: Text("Create Account" , style: TextStyle(fontSize: 28 , fontWeight: FontWeight.bold , color: Colors.black )),
             ),
 
             Container(

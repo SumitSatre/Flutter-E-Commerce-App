@@ -11,99 +11,128 @@ class ViewProductPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent, // Set the app bar's background color to transparent
+        elevation: 0, // Remove the app bar's shadow
       ),
       body: SingleChildScrollView(
         child: Container(
-          color: Colors.white38,
+          color: Color(0xFFF2F2F2), // Use a light background color
+          padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                padding: EdgeInsets.only(top: 20, left: 18),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  product["title"],
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30 , color: Colors.black),
+              Text(
+                product["title"],
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 32,
+                  color: Colors.black,
                 ),
               ),
-
-              Container(
-                padding: EdgeInsets.only(top: 5, left: 18),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  product["category"],
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15 , color: Colors.redAccent),
+              SizedBox(height: 5),
+              Text(
+                product["category"],
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Colors.redAccent,
                 ),
               ),
-
-              Container(
-                padding: EdgeInsets.all(5),
-                margin: EdgeInsets.all(15),
-                child: Image(
-                  image: NetworkImage(product["image"]),
+              SizedBox(height: 20),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  product["image"],
                   height: 350,
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
               ),
-
+              SizedBox(height: 20),
               Container(
-                height: 35,
-                color: Colors.greenAccent,
+                height: 40,
+                width: 180,
                 alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(20),
+                ),
                 child: RichText(
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text : "24% OFF ",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28 , color: Colors.red),
+                        text: "24% OFF ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
                       ),
-
                       TextSpan(
-                        text : "₹${(productPrice + (productPrice * 24) / 100).toInt()}",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25 ,color: Colors.blue,decoration: TextDecoration.lineThrough,
-                          decorationStyle: TextDecorationStyle.solid,),
+                        text:
+                        "₹${(productPrice + (productPrice * 24) / 100).toInt()}",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.white,
+                          decoration: TextDecoration.lineThrough,
+                        ),
                       ),
-
                       TextSpan(
-                        text : "  ₹$productPrice",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27 ,color: Colors.black),
+                        text: "  ₹$productPrice",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22,
+                          color: Colors.white,
+                        ),
                       ),
-                    ]
+                    ],
                   ),
-                )
+                ),
               ),
-
-
-              Container(
-                margin: EdgeInsets.only(top: 10),
-                child: RichText(
-                  text: TextSpan(
-                    children: [
-
-                      TextSpan(text : "About Product : " ,
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20 ,color: Colors.orange),),
-
-                      TextSpan(text : " ${product["description"]}" ,
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15 ,color: Colors.black , height: 1.2),),
-
-                    ]
-                  ),
-                )
+              SizedBox(height: 20),
+              Text(
+                "About Product:",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: Colors.orange,
+                ),
               ),
-
+              SizedBox(height: 5),
+              Text(
+                product["description"],
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Colors.black,
+                  height: 1.5,
+                ),
+              ),
+              SizedBox(height: 20),
               Container(
                 height: 60,
-                width: 250,
-                margin: EdgeInsets.symmetric(vertical: 18),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Color(0xFF088178),
+                  borderRadius: BorderRadius.circular(30),
+                ),
                 child: ElevatedButton(
-                  clipBehavior: Clip.hardEdge,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(8, 129, 120, 1),
-                  ),
                   onPressed: () {
                     // Add your onPressed function here
                   },
-                  child: Text("Add to cart" , style: TextStyle(fontSize: 20),),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                  ),
+                  child: Text(
+                    "Add to cart",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ),
             ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:ecommerce/components/ViewProductPage.dart';
 
 class CategryPage extends StatefulWidget {
   final String CategoryName;
@@ -63,30 +64,35 @@ class CategryPageState extends State<CategryPage> {
               itemCount: filteredProductData.length,
               itemBuilder: (context, index) {
                 var product = filteredProductData[index];
-                return Card(
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 2),
-                        height: 110,
-                        child: Image(
-                          image: NetworkImage(product["image"]),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Text(product["title"]),
-                      Text("Price: \₹${(product["price"] * 75).toInt()}"),
-                      Container(
-                        height: 25,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromRGBO(8, 129, 120, 1),
+                return InkWell(
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewProductPage(product : product)));
+                  },
+                  child: Card(
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 2),
+                          height: 110,
+                          child: Image(
+                            image: NetworkImage(product["image"]),
+                            fit: BoxFit.cover,
                           ),
-                          onPressed: () {},
-                          child: Text("Add to cart"),
                         ),
-                      )
-                    ],
+                        Text(product["title"]),
+                        Text("Price: \₹${(product["price"] * 75).toInt()}"),
+                        Container(
+                          height: 25,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromRGBO(8, 129, 120, 1),
+                            ),
+                            onPressed: () {},
+                            child: Text("Add to cart"),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 );
               },

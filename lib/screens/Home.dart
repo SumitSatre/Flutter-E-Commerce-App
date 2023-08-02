@@ -1,5 +1,6 @@
 import 'package:another_carousel_pro/another_carousel_pro.dart';
 import 'package:ecommerce/components/CategoryPage.dart';
+import 'package:ecommerce/components/ViewProductPage.dart';
 import 'package:ecommerce/screens/Categories.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -167,36 +168,41 @@ class _HomePageState extends State<HomePage> {
                     ),
                     itemCount: productData.length,
                     itemBuilder: (context, index) {
-                      return Card(
-                        child: Column(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.only(top: 10,  left: 20 , right: 20 , bottom: 2),
-                              height: 110,
-                              child: Image(
-                                image: NetworkImage(productData[index]["image"]),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-
-                            Text(productData[index]["title"]),
-
-                            Text("Price: \₹${(productData[index]["price"]*75).toInt()}"),
-
-                            Container(
-                              height : 25,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color.fromRGBO(8, 129, 120, 1),
+                      return InkWell(
+                        onTap: (){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewProductPage(product :productData[index])));
+                        },
+                        child: Card(
+                          child: Column(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(top: 10,  left: 20 , right: 20 , bottom: 2),
+                                height: 110,
+                                child: Image(
+                                  image: NetworkImage(productData[index]["image"]),
+                                  fit: BoxFit.cover,
                                 ),
-                                onPressed: () {
-                                  // Add your onPressed function here
-                                },
-                                child: Text("Add to cart"),
                               ),
 
-                            )
-                          ],
+                              Text(productData[index]["title"]),
+
+                              Text("Price: \₹${(productData[index]["price"]*75).toInt()}"),
+
+                              Container(
+                                height : 25,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Color.fromRGBO(8, 129, 120, 1),
+                                  ),
+                                  onPressed: () {
+                                    // Add your onPressed function here
+                                  },
+                                  child: Text("Add to cart"),
+                                ),
+
+                              )
+                            ],
+                          ),
                         ),
                       );
                     },

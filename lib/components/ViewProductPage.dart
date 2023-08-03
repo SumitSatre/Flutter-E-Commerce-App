@@ -11,8 +11,8 @@ class ViewProductPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent, // Set the app bar's background color to transparent
-        elevation: 0, // Remove the app bar's shadow
+        backgroundColor: Colors.blueAccent,
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -40,7 +40,7 @@ class ViewProductPage extends StatelessWidget {
               ),
               SizedBox(height: 20),
               ClipRRect(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(2),
                 child: Image.network(
                   product["image"],
                   height: 350,
@@ -50,12 +50,12 @@ class ViewProductPage extends StatelessWidget {
               ),
               SizedBox(height: 20),
               Container(
-                height: 40,
+                height: 50,
                 width: 180,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: Colors.green,
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: RichText(
                   text: TextSpan(
@@ -65,7 +65,7 @@ class ViewProductPage extends StatelessWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
-                          color: Colors.white,
+                          color: Colors.redAccent,
                         ),
                       ),
                       TextSpan(
@@ -83,7 +83,7 @@ class ViewProductPage extends StatelessWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 22,
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                       ),
                     ],

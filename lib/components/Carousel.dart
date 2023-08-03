@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:another_carousel_pro/another_carousel_pro.dart';
 
 class Carousel extends StatefulWidget{
   @override

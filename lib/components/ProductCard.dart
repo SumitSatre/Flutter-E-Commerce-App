@@ -41,8 +41,6 @@ class _ProductCardState extends State<ProductCard> {
 
             Text(widget.product["title"] , style: TextStyle(fontWeight: FontWeight.bold),),
 
-            Text("\₹${(widget.product["price"]*75).toInt()}", style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20)),
-
             // Choose Quantity Dropdown
             Container(
                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -68,8 +66,11 @@ class _ProductCardState extends State<ProductCard> {
                 )
             ),
 
+            Text("\₹${(widget.product["price"]*75*selectedQuantity).toInt()}", style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20)),
+
             Container(
               height : 35,
+              margin: EdgeInsets.only(top: 5),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromRGBO(8, 129, 120, 1),

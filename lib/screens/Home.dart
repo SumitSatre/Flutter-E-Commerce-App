@@ -1,4 +1,3 @@
-import 'package:another_carousel_pro/another_carousel_pro.dart';
 import 'package:ecommerce/components/Carousel.dart';
 import 'package:ecommerce/components/CategoryPage.dart';
 import 'package:ecommerce/components/ProductCard.dart';

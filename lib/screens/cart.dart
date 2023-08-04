@@ -15,31 +15,33 @@ class CartPage extends StatefulWidget{
 class _CartPageState extends State<CartPage> {
   var isUserLoggedIn = false;
   List<dynamic> cartData = [];
+  var UserEmail;
 
   Future<void> checkUser() async {
     var pref = await SharedPreferences.getInstance();
     var token = await pref.getString("authToken");
 
-    var UserEmail = await pref.getString("emailToken");
-
     if (token != null) {
       isUserLoggedIn = true;
     }
-  }
 
-  Future<void> getCart() async {
+    UserEmail = await pref.getString("emailToken");
+
     if(isUserLoggedIn){
       var response = await http.post(
-          Uri.parse("https://flutter-app-backend-qy7f.onrender.com/api/cart") ,
-
+          Uri.parse('https://flutter-app-backend-qy7f.onrender.com/api/cart') ,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: json.encode({"email" : UserEmail})
       );
       var responseData = json.decode(response.body);
 
       if(responseData["success"]){
-        setState(() {
-
-        });
-        cartData = responseData["UserCart"];
+          cartData = responseData["UserCart"]["cartData"];
+      }
+      else{
+        cartData = ["fi"];
       }
     }
   }
@@ -62,6 +64,28 @@ class _CartPageState extends State<CartPage> {
           }
           else{
             return cartData.isEmpty ?
+            EmptyCart() :
+            Container(
+              child: ListView.builder(itemBuilder: (context, index) {
+                return CartItemPage(cartItem: cartData[index]);
+              },
+                itemCount: cartData.length,
+
+              ),
+
+            )
+            ;
+          }
+        },
+      )
+      ,
+    );
+  }
+}
+
+/*
+
+cartData.isNotEmpty ?
             Text(cartData.toString()) :
             Container(
               child: ListView.builder(itemBuilder: (context, index) {
@@ -73,11 +97,4 @@ class _CartPageState extends State<CartPage> {
                 ),
 
             )
-            ;
-          }
-        },
-      )
-      ,
-    );
-  }
-}
+ */

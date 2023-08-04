@@ -141,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                       crossAxisCount: 2,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
-                      childAspectRatio: 1/1.33
+                      childAspectRatio: 1/1.5
 
                     ),
                     itemCount: productData.length,

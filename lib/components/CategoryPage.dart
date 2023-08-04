@@ -1,3 +1,4 @@
+import 'package:ecommerce/components/ProductCard.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -60,41 +61,12 @@ class CategryPageState extends State<CategryPage> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
+                  childAspectRatio: 1/1.5
               ),
               itemCount: filteredProductData.length,
               itemBuilder: (context, index) {
                 var product = filteredProductData[index];
-                return InkWell(
-                  onTap: (){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewProductPage(product : product)));
-                  },
-                  child: Card(
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 2),
-                          height: 110,
-                          child: Image(
-                            image: NetworkImage(product["image"]),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        Text(product["title"]),
-                        Text("Price: \₹${(product["price"] * 75).toInt()}"),
-                        Container(
-                          height: 25,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromRGBO(8, 129, 120, 1),
-                            ),
-                            onPressed: () {},
-                            child: Text("Add to cart"),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                );
+                return ProductCard(product: product);
               },
             );
           }
@@ -103,43 +75,3 @@ class CategryPageState extends State<CategryPage> {
     );
   }
 }
-/*
-
-GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-        ),
-        itemCount: filteredProductData.length,
-        itemBuilder: (context, index) {
-          var product = filteredProductData[index];
-          return Card(
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 2),
-                  height: 110,
-                  child: Image(
-                    image: NetworkImage(product["image"]),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Text(product["title"]),
-                Text("Price: \₹${(product["price"] * 75).toInt()}"),
-                Container(
-                  height: 25,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    child: Text("Add to cart"),
-                  ),
-                )
-              ],
-            ),
-          );
-        },
-      ) :
-          Center(
-              child: Text("Sorry, No Data For This Category" , style: TextStyle(fontSize: 20 , fontWeight: FontWeight.bold),)
-          )
- */

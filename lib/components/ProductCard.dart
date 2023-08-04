@@ -1,10 +1,5 @@
-import 'package:another_carousel_pro/another_carousel_pro.dart';
-import 'package:ecommerce/components/CategoryPage.dart';
-import 'package:ecommerce/components/ViewProductPage.dart';
-import 'package:ecommerce/screens/Categories.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:ecommerce/components/ViewProductPage.dart';
 
 class ProductCard extends StatefulWidget {
   Map<String, dynamic> product = {};
@@ -21,67 +16,113 @@ class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
-        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewProductPage(product : this.widget.product)));
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => ViewProductPage(product: this.widget.product),
+        ));
       },
       child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
         child: Column(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black12 , width: 0.5)
-              ),
-              padding: EdgeInsets.only(top: 10,  left: 5 , right: 5, bottom: 2),
-              height: 110,
-              child: Image(
-                image: NetworkImage(widget.product["image"]),
-                fit: BoxFit.cover,
-              ),
-            ),
-
-            Text(widget.product["title"] , style: TextStyle(fontWeight: FontWeight.bold),),
-
-            // Choose Quantity Dropdown
-            Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Choose Quantity:"),
-                      DropdownButton<int>(
-                        value: selectedQuantity,
-                        items: List.generate(6, (i) => i + 1)
-                            .map((value) => DropdownMenuItem<int>(
-                          value: value,
-                          child: Text(value.toString()),
-                        ))
-                            .toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            selectedQuantity = value!;
-                          });
-                        },
-                      ),
-                    ]
-                )
-            ),
-
-            Text("\₹${(widget.product["price"]*75*selectedQuantity).toInt()}", style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20)),
-
-            Container(
-              height : 35,
-              margin: EdgeInsets.only(top: 5),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(8, 129, 120, 1),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+                  image: DecorationImage(
+                    image: NetworkImage(widget.product["image"]),
+                    fit: BoxFit.fitHeight,
+                  ),
                 ),
-                onPressed: () {
-                  // Add your onPressed function here
-                },
-                child: Text("Add to cart"),
               ),
+            ),
 
-            )
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.product["title"],
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Quantity:",
+                          style: TextStyle(fontSize: 14, color: Colors.grey.shade500),
+                        ),
+                        DropdownButton<int>(
+                          value: selectedQuantity,
+                          items: List.generate(6, (i) => i + 1)
+                              .map((value) => DropdownMenuItem<int>(
+                            value: value,
+                            child: Text(value.toString()),
+                          ))
+                              .toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedQuantity = value!;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Text(
+                    "\₹${(widget.product["price"] * 75 * selectedQuantity).toInt()}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Colors.green,
+                    ),
+                  ),
+
+                  SizedBox(height: 10),
+
+                  Container(
+                    height: 35,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      gradient: LinearGradient(
+                        colors: [Color(0xFFf15a24), Color(0xFFffcb39)],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                      ),
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                      ),
+                      onPressed: () {
+                        // Add your onPressed function here
+                      },
+                      child: Text(
+                        "Add to Cart",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

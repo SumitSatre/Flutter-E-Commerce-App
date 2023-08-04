@@ -70,6 +70,7 @@ class _SignUpPageState extends State<SignUpPage>{
 
         var pref = await SharedPreferences.getInstance();
         await pref.setString("authToken", responseData["authToken"]);
+        await pref.setString("emailToken", email);
 
         FocusScope.of(context).unfocus();
         await Navigator.pushReplacement(

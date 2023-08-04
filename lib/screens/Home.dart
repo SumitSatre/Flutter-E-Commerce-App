@@ -18,6 +18,7 @@ class _HomePageState extends State<HomePage> {
   List productData = [];
 
   Future<void> fetchCategoryData () async {
+
     var response = await http.get(Uri.parse("https://flutter-app-backend-qy7f.onrender.com/api/categories"));
     var responseData = json.decode(response.body);
 

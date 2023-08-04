@@ -6,7 +6,7 @@ let UserSchema = new mongoose.Schema({
         required: [true, "Please Enter the Email"]
     },
     cartData: {
-        type: Map,
+        type: Array,
         required: [true, "Please Enter the Contact Number"]
     }
 });

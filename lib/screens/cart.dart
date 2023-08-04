@@ -12,6 +12,7 @@ class CartPage extends StatefulWidget{
 
 class _CartPageState extends State<CartPage> {
   var isUserLoggedIn = false;
+  List<dynamic> cartData = [];
 
   Future<void> checkUser() async {
     var pref = await SharedPreferences.getInstance();
@@ -19,6 +20,17 @@ class _CartPageState extends State<CartPage> {
 
     if (token != null) {
       isUserLoggedIn = true;
+    }
+  }
+
+  Future<void> getCart() async {
+    if(isUserLoggedIn){
+      var response = await http.get(Uri.parse("https://flutter-app-backend-qy7f.onrender.com/api/cart"));
+      var responseData = json.decode(response.body);
+
+      if(responseData["success"]){
+        cartData = responseData["UserCart"];
+      }
     }
   }
 

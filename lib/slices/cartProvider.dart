@@ -10,7 +10,7 @@ class cartProvider extends ChangeNotifier{
 
     var pref = await SharedPreferences.getInstance();
     var UserEmail = await pref.getString("emailToken");
-
+ 
     if(UserEmail != null){
       var response = await http.post(
           Uri.parse("https://flutter-app-backend-qy7f.onrender.com/cart/update"),

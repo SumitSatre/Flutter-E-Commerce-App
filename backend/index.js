@@ -19,11 +19,13 @@ app.use(cors());
 const UserRouter = require('./routes/UserRoute');
 const CategoryRouter = require("./routes/CategoryRoute");
 const ProductRouter = require('./routes/ProductRoute');
+const CartRouter = require('./routes/CartRoute');
 
 // Routes Used
 app.use("/api/user" , UserRouter);
 app.use("/api" , CategoryRouter);
 app.use("/api" , ProductRouter);
+app.use("/api" , CartRouter);
 
 app.all("*" , (req,res,next)=>{
     return next(new ErrorHandler(`Can't find ${req.originalUrl} on the server` , 404));

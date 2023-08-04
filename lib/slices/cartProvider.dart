@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 class cartProvider extends ChangeNotifier{
   List<Map<dynamic , dynamic>> cartItems =  [];
 
+  void StoreCartInMongoDbStorage(){
+    
+  }
+
   AddCartItem(String id ,String title ,String image ,int price ,int quantity ,String category){
     Map<dynamic , dynamic> item = {'id' : id , 'title' : title , 'image' : image, 'price' : price , 'quantity' : quantity , 'category' : quantity};
     cartItems.add(item);
@@ -16,16 +20,19 @@ class cartProvider extends ChangeNotifier{
         item['price'] += price;
       }
     });
+
     notifyListeners(); // Notify listeners about the change in the cartItems list
   }
 
   void DeleteCartItem(String id){
-    cartItems.removeWhere((item) {
-      return (item['id'] == id);
+    cartItems.removeWhere((item) =>  (item['id'] == id));
+
+    notifyListeners();
   }
 
   void DropCart(){
     cartItems = [];
+    notifyListeners();
   }
 
 }

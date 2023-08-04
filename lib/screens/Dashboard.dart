@@ -28,41 +28,38 @@ class _MainPageState extends State<MainPage> {
       body: _pages[_SelectedIndex],
 
       bottomNavigationBar: Container(
-        color: Color.fromRGBO(19, 111, 180, 0.98), // Light grey background color
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: GNav(
-            backgroundColor: Color.fromRGBO(19, 111, 180, 1.0), // Light grey background color
-            color: Colors.white,
-            activeColor: Colors.black,
-            tabActiveBorder: Border.all(width: 1 , color: Colors.black54),// White text color for the active tab
-            tabBackgroundColor: Colors.blue, // Blue background color for the tabs
-            gap: 4,
-            tabs: [
-              GButton(
-                icon: Icons.home_outlined,
-                text: "Home",
-              ),
-              GButton(
-                icon: Icons.category_outlined,
-                text: "Categories",
-              ),
-              GButton(
-                icon: Icons.shopping_cart,
-                text: "Cart",
-              ),
-              GButton(
-                icon: Icons.person_outline,
-                text: "You",
-              ),
-            ],
-            selectedIndex: _SelectedIndex,
-            onTabChange: (index){
-              setState(() {
-                _SelectedIndex = index;
-              });
-            },
-          ),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black , )
+        ),
+        child: GNav(
+          backgroundColor: Color.fromRGBO(19, 111, 180, 1.0), // Light grey background color
+          color: Colors.white,
+          activeColor: Colors.black,
+          gap: 4,
+          tabs: [
+            GButton(
+              icon: Icons.home_outlined,
+              text: "Home",
+            ),
+            GButton(
+              icon: Icons.category_outlined,
+              text: "Categories",
+            ),
+            GButton(
+              icon: Icons.shopping_cart,
+              text: "Cart",
+            ),
+            GButton(
+              icon: Icons.person_outline,
+              text: "You",
+            ),
+          ],
+          selectedIndex: _SelectedIndex,
+          onTabChange: (index){
+            setState(() {
+              _SelectedIndex = index;
+            });
+          },
         ),
       ),
 

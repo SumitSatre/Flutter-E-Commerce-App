@@ -1,3 +1,5 @@
+import 'package:ecommerce/components/CartItem.dart';
+import 'package:ecommerce/components/EmptyCart.dart';
 import 'package:ecommerce/components/SigninAndSignup.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -18,6 +20,8 @@ class _CartPageState extends State<CartPage> {
     var pref = await SharedPreferences.getInstance();
     var token = await pref.getString("authToken");
 
+    var UserEmail = await pref.getString("emailToken");
+
     if (token != null) {
       isUserLoggedIn = true;
     }
@@ -25,10 +29,16 @@ class _CartPageState extends State<CartPage> {
 
   Future<void> getCart() async {
     if(isUserLoggedIn){
-      var response = await http.get(Uri.parse("https://flutter-app-backend-qy7f.onrender.com/api/cart"));
+      var response = await http.post(
+          Uri.parse("https://flutter-app-backend-qy7f.onrender.com/api/cart") ,
+
+      );
       var responseData = json.decode(response.body);
 
       if(responseData["success"]){
+        setState(() {
+
+        });
         cartData = responseData["UserCart"];
       }
     }
@@ -51,9 +61,19 @@ class _CartPageState extends State<CartPage> {
             return SigninAndSignup();
           }
           else{
-            return Container(
-                child : Text("hi")
-            );
+            return cartData.isEmpty ?
+            Text(cartData.toString()) :
+            Container(
+              child: ListView.builder(itemBuilder: (context, index) {
+                  return CartItemPage(cartItem: cartData[index]);
+                },
+                  itemCount: cartData.length,
+                  reverse: true,
+                  itemExtent: 200,
+                ),
+
+            )
+            ;
           }
         },
       )

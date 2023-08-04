@@ -29,7 +29,7 @@ CartRouter.post("/cart/update", async (req , res , next)=>{
     }
 })
 
-CartRouter.get("/cart", async (req , res , next)=>{
+CartRouter.post("/cart", async (req , res , next)=>{
 
     if(!req.body.email){
         return next(new ErrorHandler("Please! Enter Essential Details", 501));

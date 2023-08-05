@@ -43,11 +43,11 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateCartItem(String id, int quantity, int price) {
+  void updateCartItem(String id, int price , int quantity) {
     cartItems.forEach((item) {
       if (item['id'] == id) {
-        item['quantity'] += quantity;
-        item['price'] += price;
+        item['quantity'] = item['quantity'] + quantity;
+        item['price'] = item['price'] + price;
       }
     });
     _saveCartItems(); // Save the updated cartItems list to local storage.

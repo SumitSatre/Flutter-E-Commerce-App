@@ -30,6 +30,17 @@ class _CartPageState extends State<CartPage> {
     UserEmail = await pref.getString("emailToken");
   }
 
+  int calculateTotalPrice(List<dynamic> cartItems) {
+    var totalPrice = 0;
+
+    cartItems.forEach((item) {
+      int price = item["price"] ?? 0;
+      totalPrice = totalPrice + price;
+    });
+
+    return totalPrice;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<CartProvider>(
@@ -50,15 +61,45 @@ class _CartPageState extends State<CartPage> {
             else{
               return cartProvider.cartItems.isEmpty ?
               EmptyCart() :
-              Container(
-                child: ListView.builder(itemBuilder: (context, index) {
-                  return CartItemPage(cartItem: cartProvider.cartItems[index]);
-                },
-                  itemCount: cartProvider.cartItems.length,
+              Scaffold(
+                body : Container(
+                  child: ListView.builder(itemBuilder: (context, index) {
+                    return CartItemPage(cartItem: cartProvider.cartItems[index] , DeleteItemCallback : cartProvider.deleteCartItem);
+                  },
+                    itemCount: cartProvider.cartItems.length,
+                  ),
                 ),
 
-              )
-              ;
+                bottomNavigationBar: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text("Total Price : ${calculateTotalPrice(cartProvider.cartItems)}")
+                    ,
+                    ElevatedButton(
+                      onPressed: () {
+                        print("Hi");
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.orange, // Text color
+                        elevation: 4, // Elevation
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10), // Rounded corners
+                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding
+                      ),
+                      child: Text(
+                        "Buy Now",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+
+                  ],
+                ),
+              );
             }
           },
         )

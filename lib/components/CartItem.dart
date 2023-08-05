@@ -2,18 +2,29 @@ import 'package:flutter/material.dart';
 
 class CartItemPage extends StatefulWidget {
   Map<dynamic, dynamic> cartItem = {};
+  final Function? DeleteItemCallback ;
 
-  CartItemPage({required this.cartItem});
+  CartItemPage({required this.cartItem , required this.DeleteItemCallback});
 
   @override
   State<CartItemPage> createState() => _CartItemPageState();
 }
 
 class _CartItemPageState extends State<CartItemPage> {
-  @override
   int quantity = 1;
+  int ItemPrice = 1;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    quantity = widget.cartItem["quantity"].toInt();
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     return Container(
       margin: EdgeInsets.all(10),
       padding: EdgeInsets.all(10),
@@ -55,7 +66,7 @@ class _CartItemPageState extends State<CartItemPage> {
                 ),
                 SizedBox(height: 5),
                 Text(
-                  "\₹${(widget.cartItem["price"]*75).toInt()}",
+                  "\₹${ItemPrice = widget.cartItem["price"] * quantity}",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -110,7 +121,7 @@ class _CartItemPageState extends State<CartItemPage> {
           ),
           IconButton(
             onPressed: () {
-              // Implement remove item from cart functionality
+              widget.DeleteItemCallback!(widget.cartItem["id"]);
             },
             icon: Icon(
               Icons.delete,

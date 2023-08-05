@@ -13,7 +13,7 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> {
-  int selectedQuantity = 1;
+  int selectedQuantity = 1 ?? 1;
 
   @override
 
@@ -113,7 +113,7 @@ class _ProductCardState extends State<ProductCard> {
                         ),
                         onPressed: () {
                           Map<dynamic, dynamic>  temp = {};
-                          int productPrice = widget.product["price"].toInt() * 75 * selectedQuantity;
+                          int productPrice = (widget.product["price"] ?? 0).toInt() * 75 * selectedQuantity;
 
                           cartProvider.cartItems.forEach((element) {
                             if (widget.product["_id"] == element["id"]) {
@@ -122,7 +122,7 @@ class _ProductCardState extends State<ProductCard> {
                           });
 
                           // Item is not present in the list so you have to add it
-                          if(!temp.isEmpty){
+                          if(temp.isEmpty){
                             cartProvider.addCartItem(widget.product["_id"] , widget.product["title"] , widget.product["image"]
                             ,productPrice , selectedQuantity , widget.product["category"]);
                           }
@@ -130,8 +130,8 @@ class _ProductCardState extends State<ProductCard> {
 
                           // Item is present in the list so you have to update it
                           else{
-                            cartProvider.updateCartItem( widget.product["_id"] , widget.product["quantity"]
-                                ,productPrice );
+                            cartProvider.updateCartItem(widget.product["_id"] ,productPrice , selectedQuantity );
+                            print("OK");
                           }
 
                         },

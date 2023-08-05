@@ -25,7 +25,7 @@ class FlutterApp extends StatelessWidget{
    Widget build(BuildContext context) {
      return MultiProvider(
        providers: [
-         ChangeNotifierProvider(create: (context)=> cartProvider() )
+         ChangeNotifierProvider(create: (context)=> CartProvider() )
        ],
        child: MaterialApp(
          debugShowCheckedModeBanner: false,

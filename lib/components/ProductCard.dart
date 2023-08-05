@@ -18,7 +18,7 @@ class _ProductCardState extends State<ProductCard> {
   @override
 
   Widget build(BuildContext context) {
-    return Consumer<cartProvider>(
+    return Consumer<CartProvider>(
       builder : (context , cartProvider , child) => InkWell(
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
@@ -121,20 +121,18 @@ class _ProductCardState extends State<ProductCard> {
                             }
                           });
 
-                          cartProvider.DropCart();
-
                           // Item is not present in the list so you have to add it
-                          // if(!temp.isEmpty){
-                          //   cartProvider.AddCartItem(widget.product["_id"] , widget.product["title"] , widget.product["image"]
-                          //   ,productPrice , selectedQuantity , widget.product["category"]);
-                          // }
-//
-//
-                          // // Item is present in the list so you have to update it
-                          // else{
-                          //   cartProvider.updateCartItem( widget.product["_id"] , widget.product["quantity"]
-                          //       ,productPrice );
-                          // }
+                          if(!temp.isEmpty){
+                            cartProvider.addCartItem(widget.product["_id"] , widget.product["title"] , widget.product["image"]
+                            ,productPrice , selectedQuantity , widget.product["category"]);
+                          }
+
+
+                          // Item is present in the list so you have to update it
+                          else{
+                            cartProvider.updateCartItem( widget.product["_id"] , widget.product["quantity"]
+                                ,productPrice );
+                          }
 
                         },
                         child: Text(

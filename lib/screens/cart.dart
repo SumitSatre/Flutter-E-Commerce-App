@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ecommerce/slices/cartProvider.dart';
+import 'package:provider/provider.dart';
 
 class CartPage extends StatefulWidget{
 
@@ -26,75 +28,42 @@ class _CartPageState extends State<CartPage> {
     }
 
     UserEmail = await pref.getString("emailToken");
-
-    if(isUserLoggedIn){
-      var response = await http.post(
-          Uri.parse('https://flutter-app-backend-qy7f.onrender.com/api/cart') ,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: json.encode({"email" : UserEmail})
-      );
-      var responseData = json.decode(response.body);
-
-      if(responseData["success"]){
-          cartData = responseData["UserCart"]["cartData"];
-      }
-      else{
-        cartData = ["fi"];
-      }
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return Consumer<CartProvider>(
+      builder : (context , cartProvider , child) => Scaffold(
+        appBar: AppBar(
 
+        ),
+
+        body: FutureBuilder<void>(
+          future: checkUser(),
+          builder: (context , snapshot){
+            if(snapshot.connectionState == ConnectionState.waiting){
+              return Center(child: CircularProgressIndicator());
+            }
+            else if(!isUserLoggedIn){
+              return SigninAndSignup();
+            }
+            else{
+              return cartProvider.cartItems.isEmpty ?
+              EmptyCart() :
+              Container(
+                child: ListView.builder(itemBuilder: (context, index) {
+                  return CartItemPage(cartItem: cartProvider.cartItems[index]);
+                },
+                  itemCount: cartProvider.cartItems.length,
+                ),
+
+              )
+              ;
+            }
+          },
+        )
+        ,
       ),
-
-      body: FutureBuilder<void>(
-        future: checkUser(),
-        builder: (context , snapshot){
-          if(snapshot.connectionState == ConnectionState.waiting){
-            return Center(child: CircularProgressIndicator());
-          }
-          else if(!isUserLoggedIn){
-            return SigninAndSignup();
-          }
-          else{
-            return cartData.isEmpty ?
-            EmptyCart() :
-            Container(
-              child: ListView.builder(itemBuilder: (context, index) {
-                return CartItemPage(cartItem: cartData[index]);
-              },
-                itemCount: cartData.length,
-
-              ),
-
-            )
-            ;
-          }
-        },
-      )
-      ,
     );
   }
 }
-
-/*
-
-cartData.isNotEmpty ?
-            Text(cartData.toString()) :
-            Container(
-              child: ListView.builder(itemBuilder: (context, index) {
-                  return CartItemPage(cartItem: cartData[index]);
-                },
-                  itemCount: cartData.length,
-                  reverse: true,
-                  itemExtent: 200,
-                ),
-
-            )
- */

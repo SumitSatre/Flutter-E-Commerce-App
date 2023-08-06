@@ -15,8 +15,7 @@ class CartProvider extends ChangeNotifier {
     // Retrieve the cartItems list from local storage as JSON.
     String cartItemsJson = prefs.getString('cart_items') ?? '[]';
     // Convert the JSON string to a list of maps.
-    cartItems = List<Map<dynamic, dynamic>>.from(
-        json.decode(cartItemsJson).map((item) => Map<String, dynamic>.from(item)));
+    cartItems = json.decode(cartItemsJson);
     notifyListeners();
   }
 
@@ -25,6 +24,7 @@ class CartProvider extends ChangeNotifier {
     // Convert the list of maps to JSON string.
     String cartItemsJson = json.encode(cartItems);
     // Save the JSON string to local storage.
+    await prefs.remove('cart_items');
     await prefs.setString('cart_items', cartItemsJson);
   }
 
@@ -47,7 +47,6 @@ class CartProvider extends ChangeNotifier {
     cartItems.forEach((item) {
       if (item['id'] == id) {
         item['quantity'] = item['quantity'] + quantity;
-        item['price'] = item['price'] + price;
       }
     });
     _saveCartItems(); // Save the updated cartItems list to local storage.

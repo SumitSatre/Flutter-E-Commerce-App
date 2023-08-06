@@ -3,24 +3,15 @@ import 'package:flutter/material.dart';
 class CartItemPage extends StatefulWidget {
   Map<dynamic, dynamic> cartItem = {};
   final Function? DeleteItemCallback ;
+  final Function? updateCartItem ;
 
-  CartItemPage({required this.cartItem , required this.DeleteItemCallback});
+  CartItemPage({required this.cartItem , required this.DeleteItemCallback , required this.updateCartItem});
 
   @override
   State<CartItemPage> createState() => _CartItemPageState();
 }
 
 class _CartItemPageState extends State<CartItemPage> {
-  int quantity = 1;
-  int ItemPrice = 1;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    quantity = widget.cartItem["quantity"].toInt();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +57,7 @@ class _CartItemPageState extends State<CartItemPage> {
                 ),
                 SizedBox(height: 5),
                 Text(
-                  "\₹${ItemPrice = widget.cartItem["price"] * quantity}",
+                  "\₹${widget.cartItem["price"] * widget.cartItem["quantity"]}",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -95,21 +86,21 @@ class _CartItemPageState extends State<CartItemPage> {
                     IconButton(
                       onPressed: () {
                         setState(() {
-                          if (quantity > 1) {
-                            quantity--;
+                          if (widget.cartItem["quantity"] > 1) {
+                            widget.updateCartItem!(widget.cartItem["id"] , widget.cartItem["price"] , -1);
                           }
                         });
                       },
                       icon: Icon(Icons.remove),
                     ),
                     Text(
-                      "$quantity",
+                      "${widget.cartItem["quantity"]}",
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     IconButton(
                       onPressed: () {
                         setState(() {
-                          quantity++;
+                          widget.updateCartItem!(widget.cartItem["id"] , widget.cartItem["price"] , 1);
                         });
                       },
                       icon: Icon(Icons.add),

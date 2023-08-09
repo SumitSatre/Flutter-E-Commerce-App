@@ -1,7 +1,9 @@
+import 'package:ecommerce/screens/SignUp.dart';
 import 'package:ecommerce/slices/cartProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce/components/ViewProductPage.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductCard extends StatefulWidget {
   Map<dynamic, dynamic> product = {};
@@ -111,7 +113,14 @@ class _ProductCardState extends State<ProductCard> {
                           backgroundColor: Colors.transparent,
                           elevation: 0,
                         ),
-                        onPressed: () {
+                        onPressed: () async {
+                          var pref = await SharedPreferences.getInstance();
+                          String? checkUser = await pref.getString('authToken');
+
+                          if(checkUser == null ){
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> SignUpPage()));
+                          }
+
                           Map<dynamic, dynamic>  temp = {};
                           int productPrice = (widget.product["price"] ?? 0).toInt() * 75 * selectedQuantity;
 
@@ -131,7 +140,6 @@ class _ProductCardState extends State<ProductCard> {
                           // Item is present in the list so you have to update it
                           else{
                             cartProvider.updateCartItem(widget.product["_id"] ,productPrice , selectedQuantity );
-                            print("OK");
                           }
 
                         },

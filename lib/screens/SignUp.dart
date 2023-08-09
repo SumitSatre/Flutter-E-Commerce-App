@@ -54,6 +54,8 @@ class _SignUpPageState extends State<SignUpPage>{
         'contact': contact,
       };
 
+      FocusScope.of(context).unfocus();
+
       var response = await http.post(
         Uri.parse("https://flutter-app-backend-qy7f.onrender.com/api/user/signup"),
         headers: {
@@ -72,7 +74,6 @@ class _SignUpPageState extends State<SignUpPage>{
         await pref.setString("authToken", responseData["authToken"]);
         await pref.setString("emailToken", email);
 
-        FocusScope.of(context).unfocus();
         await Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => MainPage()),
@@ -81,8 +82,7 @@ class _SignUpPageState extends State<SignUpPage>{
 
       // if post api fetched unsuccessfully
       else {
-        // This automatically close the keyboard
-        FocusScope.of(context).unfocus();
+
         // Show the AlertDialog with the signUpMessage
         showDialog(
           context: context,

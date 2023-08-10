@@ -8,8 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ecommerce/slices/cartProvider.dart';
 import 'package:provider/provider.dart';
 
-class CartPage extends StatefulWidget{
-
+class CartPage extends StatefulWidget {
   @override
   State<CartPage> createState() => _CartPageState();
 }
@@ -17,6 +16,7 @@ class CartPage extends StatefulWidget{
 class _CartPageState extends State<CartPage> {
   var isUserLoggedIn = false;
   var UserEmail;
+  var responseData;
 
   Future<void> checkUser() async {
     var pref = await SharedPreferences.getInstance();
@@ -40,36 +40,57 @@ class _CartPageState extends State<CartPage> {
     return totalPrice;
   }
 
+  Future<bool> HandleBuyNow(CartData) async {
+    var data = {
+      "email": UserEmail,
+      "order_date": DateTime.now().toString(),
+      "ordersData": CartData,
+    };
+
+    var response = await http.post(
+      Uri.parse("https://flutter-app-backend-qy7f.onrender.com/api/myorders/update"),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(data),
+    );
+
+     responseData = json.decode(response.body);
+
+    if (responseData["success"]) {
+      return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<CartProvider>(
-      builder : (context , cartProvider , child) => Scaffold(
-        appBar: AppBar(
-
-        ),
-
+      builder: (context, cartProvider, child) => Scaffold(
+        appBar: AppBar(),
         body: FutureBuilder<void>(
           future: checkUser(),
-          builder: (context , snapshot){
-            if(snapshot.connectionState == ConnectionState.waiting){
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
-            }
-            else if(!isUserLoggedIn){
+            } else if (!isUserLoggedIn) {
               return SigninAndSignup();
-            }
-            else{
-              return cartProvider.cartItems.isEmpty ?
-              EmptyCart() :
-              Scaffold(
-                body : Container(
-                  child: ListView.builder(itemBuilder: (context, index) {
-                    return CartItemPage(cartItem: cartProvider.cartItems[index] , DeleteItemCallback : cartProvider.deleteCartItem ,
-                        updateCartItem : cartProvider.updateCartItem) ;
-                  },
+            } else {
+              return cartProvider.cartItems.isEmpty
+                  ? EmptyCart()
+                  : Scaffold(
+                body: Container(
+                  child: ListView.builder(
                     itemCount: cartProvider.cartItems.length,
+                    itemBuilder: (context, index) {
+                      return CartItemPage(
+                        cartItem: cartProvider.cartItems[index],
+                        DeleteItemCallback: cartProvider.deleteCartItem,
+                        updateCartItem: cartProvider.updateCartItem,
+                      );
+                    },
                   ),
                 ),
-
                 bottomNavigationBar: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -96,17 +117,70 @@ class _CartPageState extends State<CartPage> {
                       width: 170,
                       child: ElevatedButton(
                         onPressed: () {
-                          print("Hi");
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return FutureBuilder<bool>(
+                                future: HandleBuyNow(cartProvider.cartItems),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    return Center(child: CircularProgressIndicator());
+                                  } else if (!snapshot.hasData) {
+                                    return AlertDialog(
+                                      title: Text('Sorry,'),
+                                      content: Text(responseData.toString()),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  } else {
+                                    if (snapshot.data == true) {
+                                      cartProvider.dropCart();
+                                      return AlertDialog(
+                                        title: Text('Thank you,'),
+                                        content: Text(responseData["message"].toString()),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    }
+                                    // Handle failure scenario here
+                                    return AlertDialog(
+                                      title: Text('Sorry'),
+                                      content: Text("Something went wrong!!"),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  }
+                                },
+                              );
+                            },
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
-                          backgroundColor: Colors.orange, // Text color
-                          elevation: 4, // Elevation
+                          backgroundColor: Colors.orange,
+                          elevation: 4,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10), // Rounded corners
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                          // Padding
                         ),
                         child: Text(
                           "Buy Now",
@@ -117,14 +191,12 @@ class _CartPageState extends State<CartPage> {
                         ),
                       ),
                     ),
-
                   ],
                 ),
               );
             }
           },
-        )
-        ,
+        ),
       ),
     );
   }

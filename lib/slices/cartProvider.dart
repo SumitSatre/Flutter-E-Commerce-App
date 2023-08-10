@@ -19,17 +19,14 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _saveCartItems() async {
+  Future<void> _saveCartItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    // Convert the list of maps to JSON string.
     String cartItemsJson = json.encode(cartItems);
-    // Save the JSON string to local storage.
-    await prefs.remove('cart_items');
     await prefs.setString('cart_items', cartItemsJson);
   }
 
-  void addCartItem(
-      String id, String title, String image, int price, int quantity , String category) {
+  Future<void> addCartItem(
+      String id, String title, String image, int price, int quantity, String category) async {
     Map<dynamic, dynamic> item = {
       'id': id,
       'title': title,
@@ -39,29 +36,30 @@ class CartProvider extends ChangeNotifier {
       'category': category
     };
     cartItems.add(item);
-    _saveCartItems(); // Save the updated cartItems list to local storage.
+    await _saveCartItems(); // Wait for the cart items to be saved.
     notifyListeners();
   }
 
-  void updateCartItem(String id, int price , int quantity) {
+  Future<void> updateCartItem(String id, int price, int quantity) async {
     cartItems.forEach((item) {
       if (item['id'] == id) {
         item['quantity'] = item['quantity'] + quantity;
       }
     });
-    _saveCartItems(); // Save the updated cartItems list to local storage.
+    await _saveCartItems(); // Wait for the cart items to be saved.
     notifyListeners();
   }
 
-  void deleteCartItem(String id) {
+  Future<void> deleteCartItem(String id) async {
     cartItems.removeWhere((item) => item['id'] == id);
-    _saveCartItems(); // Save the updated cartItems list to local storage.
+    await _saveCartItems(); // Wait for the cart items to be saved.
     notifyListeners();
   }
 
-  void dropCart() {
+  Future<void> dropCart() async {
     cartItems = [];
-    _saveCartItems(); // Save the updated cartItems list to local storage.
+    await _saveCartItems(); // Wait for the cart items to be saved.
     notifyListeners();
   }
+
 }

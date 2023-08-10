@@ -1,6 +1,6 @@
 import 'package:ecommerce/components/SigninAndSignup.dart';
 import 'package:ecommerce/screens/Menu/sourceCodeLink.dart';
-import 'package:ecommerce/screens/cart.dart';
+import 'package:ecommerce/screens/Cart/cart.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -79,56 +79,3 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 }
-
-/*
-
-Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                height: 50,
-                width: 150,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black26 , width: 1),
-                  borderRadius : BorderRadius.circular(6)
-                ),
-                margin: EdgeInsets.all(15),
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.cyanAccent,
-                      elevation: 0,
-                    ),
-                    onPressed: (){
-
-                    },
-                    child: Text("My Orders" , style: TextStyle(color: Colors.black , fontWeight: FontWeight.w500 , fontSize: 22), )
-                ),
-              ),
-
-              Container(
-                height: 50,
-                width: 150,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black26 , width: 1),
-                  borderRadius : BorderRadius.circular(6)
-              ),
-                margin: EdgeInsets.all(15),
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.cyanAccent,
-                      elevation: 0,
-                    ),
-                    onPressed: (){
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=> CartPage()));
-                    },
-                    child: Text("My Cart" , style: TextStyle(color: Colors.black , fontWeight: FontWeight.w500 , fontSize: 22), )
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-
- */

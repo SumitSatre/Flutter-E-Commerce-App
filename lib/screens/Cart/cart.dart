@@ -1,5 +1,5 @@
-import 'package:ecommerce/components/CartItem.dart';
-import 'package:ecommerce/components/EmptyCart.dart';
+import 'package:ecommerce/screens/Cart/CartItem.dart';
+import 'package:ecommerce/screens/Cart/EmptyCart.dart';
 import 'package:ecommerce/components/SigninAndSignup.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -16,7 +16,6 @@ class CartPage extends StatefulWidget{
 
 class _CartPageState extends State<CartPage> {
   var isUserLoggedIn = false;
-  List<dynamic> cartData = [];
   var UserEmail;
 
   Future<void> checkUser() async {

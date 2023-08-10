@@ -24,6 +24,7 @@ class ChromeLinkWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: Colors.white24,
       title: Text('Open github link,'),
       content: Container(
         alignment: Alignment.topLeft,

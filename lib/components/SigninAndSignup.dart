@@ -1,5 +1,5 @@
-import 'package:ecommerce/screens/Login.dart';
-import 'package:ecommerce/screens/SignUp.dart';
+import 'package:ecommerce/screens/Auth/Login.dart';
+import 'package:ecommerce/screens/Auth/SignUp.dart';
 import 'package:flutter/material.dart';
 
 class SigninAndSignup extends StatelessWidget{

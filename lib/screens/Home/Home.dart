@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:ecommerce/components/Carousel.dart';
-import 'package:ecommerce/components/CategoryPage.dart';
+import 'package:ecommerce/screens/Categories/CategoryPage.dart';
 import 'package:ecommerce/components/ProductCard.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;

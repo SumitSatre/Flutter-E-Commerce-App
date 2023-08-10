@@ -1,6 +1,6 @@
-import 'package:ecommerce/screens/Home.dart';
+import 'package:ecommerce/screens/Home/Home.dart';
 import 'package:ecommerce/screens/Dashboard.dart';
-import 'package:ecommerce/screens/Login.dart';
+import 'package:ecommerce/screens/Auth/Login.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

@@ -1,4 +1,4 @@
-import 'package:ecommerce/screens/SignUp.dart';
+import 'package:ecommerce/screens/Auth/SignUp.dart';
 import 'package:ecommerce/slices/cartProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce/components/ViewProductPage.dart';

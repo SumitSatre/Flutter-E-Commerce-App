@@ -20,12 +20,14 @@ const UserRouter = require('./routes/UserRoute');
 const CategoryRouter = require("./routes/CategoryRoute");
 const ProductRouter = require('./routes/ProductRoute');
 const CartRouter = require('./routes/CartRoute');
+const MyOrdersRouter = require('./routes/OrdersRoute');
 
 // Routes Used
 app.use("/api/user" , UserRouter);
 app.use("/api" , CategoryRouter);
 app.use("/api" , ProductRouter);
 app.use("/api" , CartRouter);
+app.use("/api" , MyOrdersRouter);
 
 app.all("*" , (req,res,next)=>{
     return next(new ErrorHandler(`Can't find ${req.originalUrl} on the server` , 404));

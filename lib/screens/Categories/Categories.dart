@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:ecommerce/components/CategoryPage.dart';
+import 'package:ecommerce/screens/Categories/CategoryPage.dart';
 
 
 class CategoriesPage extends StatefulWidget{

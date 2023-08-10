@@ -1,5 +1,5 @@
 import 'package:ecommerce/screens/Dashboard.dart';
-import 'package:ecommerce/screens/SignUp.dart';
+import 'package:ecommerce/screens/Auth/SignUp.dart';
 import 'package:ecommerce/slices/cartProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
